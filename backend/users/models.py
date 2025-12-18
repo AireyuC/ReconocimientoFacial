@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.conf import settings # Importante para relacionar con tu usuario
 
 class CustomUser(AbstractUser):
     # En la UAGRM usan matrícula (ej: 215034821), así que ese será nuestro ID
@@ -14,3 +15,11 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.matricula
+    
+
+class Asistencia(models.Model):
+    estudiante = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    fecha = models.DateTimeField(auto_now_add=True) # Se guarda la hora exacta automáticamente
+
+    def __str__(self):
+        return f"{self.estudiante.matricula} - {self.fecha}"
